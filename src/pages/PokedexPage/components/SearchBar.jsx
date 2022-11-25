@@ -1,32 +1,27 @@
 import React from 'react'
-import { SafeAreaView, StyleSheet, TextInput } from "react-native";
+import { Box, Input } from 'native-base'
+import { StyleSheet } from 'react-native'
 
 export const SearchBar = () => {
 
     const [getSearch, setSearch] = React.useState("")
 
-    return <SafeAreaView style={styles.container}>
-        <TextInput
-            style={styles.input}
+    return <Box style={styles.container}>
+        <Input 
             onChangeText={setSearch}
             value={getSearch}
             placeholder="Search"
+            size="xl"
+            w="100%" 
+            margin={0}
         />
-        
-    </SafeAreaView>
+    </Box>
 }
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
-        alignItems: 'center'
-    },
-    input: {
-      height: 40,
-      borderWidth: 2,
-      padding: 14,
-      borderColor: "#4630eb",
-      width: 250,
-      backgroundColor: '#fff'
-    },
+        marginVertical: 10,
+        padding: 0
+    }
 });
+

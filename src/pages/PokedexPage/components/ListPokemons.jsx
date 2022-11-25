@@ -1,21 +1,18 @@
-import { useState } from "react";
-import { StyleSheet, View, FlatList } from 'react-native'
+import { useState, useRef } from "react";
 import { CardPokemon } from "./CardPokemon";
 import { ListPokemonService } from "./services/ListPokemons.service";
+import { Box, Modal, Center } from 'native-base'
 
 const TOTAL_POKEMONS = 60;
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 10
-    }
-});
 
 export const ListPokemons = () => {
 
     const service = new ListPokemonService();
 
-    const [getPokemons, setPokemons] = useState([]);
+    const [getPokemons, setPokemons] = useState({
+        showPokemons: false,
+        pokemons: []
+    });
 
     const initialProgram = async () => {
         const pokemons = []
@@ -24,7 +21,7 @@ export const ListPokemons = () => {
             const response = await service.getPokemonData(i.toString())
 
             const svg = response.data.sprites.other ? 
-                    response.data.sprites.other.dream_world.front_default : ""
+                response.data.sprites.other.dream_world.front_default : ""
 
             pokemons.push({
                 name: response.data.name,
@@ -36,15 +33,14 @@ export const ListPokemons = () => {
         return pokemons
     }
 
-    initialProgram().then(value => setPokemons(value))
+    initialProgram().then(value => setPokemons({
+        showPokemons: true,
+        pokemons: value
+    }))
 
-    return <View style={styles.container}> 
-            { getPokemons.length == TOTAL_POKEMONS - 1 ? 
-                <FlatList
-                    data={getPokemons}
-                    renderItem={({item}) => <CardPokemon value={item} />}
-                    numColumns={2}
-                /> : null
-            }
-        </View>
+    return <>
+        <Center>
+            { getPokemons.showPokemons ? getPokemons.pokemons.map(item => <CardPokemon value={item} />) : null }
+        </Center>
+    </>
 }

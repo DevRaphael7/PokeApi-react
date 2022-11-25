@@ -1,15 +1,13 @@
-import { Image, StyleSheet, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { Pressable, Stack, Box, Text, Image, Modal } from 'native-base'
+import { useState } from 'react'
 
 const styles = StyleSheet.create({
-    pokeImg: {
-        height: 90,
-        width: 90,
-        borderRadius: '50%',
-        resizeMode: 'cover'
+    container: {
+        marginVertical: 10
     },
     title: {
         'fontSize': 14,
-        fontWeight: 'bold',
         backgroundColor: '#a3db20',
         padding: 5,
         borderRadius: 10,
@@ -27,21 +25,50 @@ const styles = StyleSheet.create({
 });
 
 export const CardPokemon = ({ value }) => {
-    return <div style={{
-        'backgroundColor': '#fff',
-        'margin': '10px',
-        'padding': '10px',
-        'borderRadius': '10px',
-        width: '200px',
-        height: '160px',
-    }}>
-        <Image
-            style={styles.pokeImg}
-            source={value.img}
-        />
-        <Text style={styles.title}>{ value.name }</Text>
-        <br />
-        <br />
-        <Text style={styles.typeText}>{ value.type }</Text>
-    </div>
+
+    const [getShowModal, setShowModal] = useState(false)
+
+    return <>
+
+        <Modal 
+            isOpen={getShowModal} 
+            onClose={() => setShowModal(false)}
+            size="lg">
+            <Modal.Content maxH="212">
+                <Modal.CloseButton />
+                <Modal.Header>Contact Us</Modal.Header>
+                <Modal.Body backgroundColor="#fff" w="100%">
+                    Por quebhhughghg
+                </Modal.Body>
+            </Modal.Content>
+        </Modal>
+
+        <Pressable style={styles.container} w={'full'} onFocus={() => setShowModal(true)}>
+            {({
+                isHovered,
+                isFocused,
+                isPressed
+            }) => { 
+                return <Box
+                    w={300} 
+                    borderWidth="1" 
+                    borderColor="coolGray.200" 
+                    rounded="lg"
+                    padding={2.5}
+                    bg={isPressed ? 'coolGray.200' : isFocused ? 'amber.200' : 'coolGray.100'}>
+
+                        <Image size={90} borderRadius={10} resizeMode="cover" source={{
+                            uri: value.img
+                        }} alt={value.name} />
+                        
+                        <Stack direction="row" marginTop={2}>
+                            <Text style={styles.title} marginRight={1.5} bold>{ value.name }</Text>
+                            <Text style={styles.typeText} thin>{ value.type }</Text>
+                        </Stack>
+
+                </Box>
+            }}
+
+        </Pressable>
+    </> 
 }
